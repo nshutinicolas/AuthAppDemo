@@ -23,12 +23,17 @@ class SignInWithEmailValidationTest: XCTestCase {
         validation = nil
     }
     
-    func testEmailValidation() throws {
-        
+    func testEmailValidationForValidEmail() throws {
+        XCTAssertNoThrow(try validation.validateEmail("nicolas@kigalisoftware.com"))
+    }
+    
+    func testEmailValidationForAvailable() throws {
+        XCTAssertThrowsError(try validation.validateEmail(nil))
     }
     
     func testPasswordValidation() throws {
-        
+        // More test to be taken here
+        XCTAssertNoThrow(try validation.validatePassword("ninos"))
     }
     
 }
