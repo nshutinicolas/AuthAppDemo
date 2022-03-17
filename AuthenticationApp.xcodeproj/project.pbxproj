@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		6C5FF3F027E3187700489262 /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 6C5FF3EF27E3187700489262 /* FacebookLogin */; };
+		6C5FF3F227E3340900489262 /* SignInWithEmailValidationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5FF3F127E3340900489262 /* SignInWithEmailValidationTest.swift */; };
 		6CE70F0827E25CE50096D7C1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE70F0727E25CE50096D7C1 /* AppDelegate.swift */; };
 		6CE70F0A27E25CE50096D7C1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE70F0927E25CE50096D7C1 /* SceneDelegate.swift */; };
 		6CE70F0C27E25CE50096D7C1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE70F0B27E25CE50096D7C1 /* ViewController.swift */; };
@@ -42,6 +43,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6C5FF3F127E3340900489262 /* SignInWithEmailValidationTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInWithEmailValidationTest.swift; sourceTree = "<group>"; };
 		6CE70F0427E25CE50096D7C1 /* AuthenticationApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AuthenticationApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6CE70F0727E25CE50096D7C1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6CE70F0927E25CE50096D7C1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -129,6 +131,7 @@
 			isa = PBXGroup;
 			children = (
 				6CE70F1E27E25CE90096D7C1 /* AuthenticationAppTests.swift */,
+				6C5FF3F127E3340900489262 /* SignInWithEmailValidationTest.swift */,
 			);
 			path = AuthenticationAppTests;
 			sourceTree = "<group>";
@@ -297,6 +300,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6CE70F1F27E25CE90096D7C1 /* AuthenticationAppTests.swift in Sources */,
+				6C5FF3F227E3340900489262 /* SignInWithEmailValidationTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
