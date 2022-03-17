@@ -14,50 +14,25 @@ import GoogleSignIn
 import AuthenticationServices
 import CryptoKit
 import FacebookLogin
+import Resolver
 
+/*
+ It better to separate concern by moving logic (validation, authentication, etc.) to
+ a ViewModel that will then use different specialized services (Please, check the ViewModel.swift file)
+ */
 struct User {
     var id: String
     var firtname: String?
     var lastname: String?
     var email: String?
 }
-enum ValidationError: LocalizedError {
-    case emailRequired
-    case invalidEmail
-    case invalidPassword
-    
-    var errorDescription: String {
-        switch self {
-        case .emailRequired:
-            return "Email address is required"
-        case .invalidEmail:
-            return "Email must be valid"
-        case .invalidPassword:
-            return "Your password is inavlid"
-        }
-    }
-}
 
-struct ValidationService {
-    func validateEmail(_ email: String?) throws-> String {
-        guard let email = email else {
-            throw ValidationError.emailRequired
-        }
-        // Verify email with regex for invalidemail error
-        return email
-    }
-    func validatePassword(_ password: String?) throws-> String {
-        guard let password = password else {
-            throw ValidationError.invalidPassword
-        }
-        // More password verification
-        return password
-    }
-}
 
 class ViewController: UIViewController {
     
-    let auth = Auth.auth()
+//    let auth = Auth.auth()
+    @Injected private var viewModel: ViewModel
+
     // Google
     let googleBtn = GIDSignInButton()
     // Apple
@@ -66,15 +41,15 @@ class ViewController: UIViewController {
     // Email and password
     let emailText = UITextField()
     let passwordText = UITextField()
-    let validation = ValidationService()
+//    let validation = ValidationService()
     // facebook
-    let loginButton = FBLoginButton()
+//    let loginButton = FBLoginButton()
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemGreen
         view.addSubview(googleBtn)
         view.addSubview(appleBtn)
-        view.addSubview(loginButton)
+//        view.addSubview(loginButton)
         
         googleBtn.addTarget(self, action: #selector(googleSignIn), for: .touchUpInside)
         googleBtn.translatesAutoresizingMaskIntoConstraints = false
@@ -86,10 +61,10 @@ class ViewController: UIViewController {
         appleBtn.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 60).isActive = true
         appleBtn.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
-        loginButton.translatesAutoresizingMaskIntoConstraints = false
-        loginButton.addTarget(self, action: #selector(appleSignIn), for: .touchUpInside)
-        loginButton.topAnchor.constraint(equalTo: appleBtn.bottomAnchor, constant: 20).isActive = true
-        loginButton.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 60).isActive = true
+//        loginButton.translatesAutoresizingMaskIntoConstraints = false
+//        loginButton.addTarget(self, action: #selector(appleSignIn), for: .touchUpInside)
+//        loginButton.topAnchor.constraint(equalTo: appleBtn.bottomAnchor, constant: 20).isActive = true
+//        loginButton.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 60).isActive = true
 //        appleBtn.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     }
 }
@@ -240,26 +215,47 @@ extension ViewController: ASAuthorizationControllerPresentationContextProviding 
 extension ViewController {
     // MARK: - Email Sign in
     @objc func signInWithEmail(email: String, password: String) {
-        // Verify email and password
-        do {
-            let email = try validation.validateEmail(emailText.text)
-            let password = try validation.validatePassword(passwordText.text)
-            
-            auth.signIn(withEmail: email, password: password) { [weak self] authResult, error in
-                if let error = error {
-                    print(error)
-                    return
-                }
-                // User signed in
-                guard let userEmail = self?.auth.currentUser?.email, let username = self?.auth.currentUser?.displayName, let uid = self?.auth.currentUser?.uid else {
-                    return
-                }
-                print("\(username) signed in with \(userEmail) and id of \(uid)")
-                // Save to Firestore with UID as key
+        viewModel.signIn(email: emailText.text, password: passwordText.text) { result in
+            switch result {
+            case .success(let isSignedIn):
+                // Handle UI navigation or other logic here
+                break
+
+            case .failure(let error) where error as? ValidationError == .emailRequired:
+                // Handle email required error here
+                break
+                
+            case .failure(let error) where error as? ValidationError == .invalidEmail:
+                // Handle error here
+                break
+            //
+            //
+            //
+            //
+            default:
+                break
             }
-        } catch let error as NSError {
-            print(error)
         }
+//        // Verify email and password
+//        do {
+//            let email = try validation.validateEmail(emailText.text)
+//            let password = try validation.validatePassword(passwordText.text)
+//
+//            auth.signIn(withEmail: email, password: password) { [weak self] authResult, error in
+//                if let error = error {
+//                    print(error)
+//                    return
+//                }
+//                // User signed in
+//                guard let userEmail = self?.auth.currentUser?.email, let username = self?.auth.currentUser?.displayName, let uid = self?.auth.currentUser?.uid else {
+//                    return
+//                }
+//                print("\(username) signed in with \(userEmail) and id of \(uid)")
+//                // Save to Firestore with UID as key
+//            }
+//        } catch let error as NSError {
+//            print(error)
+//        }
     }
 }
 
