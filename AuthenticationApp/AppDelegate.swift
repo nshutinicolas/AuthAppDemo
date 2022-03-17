@@ -8,14 +8,16 @@
 
 
 import UIKit
+import Firebase
+import GoogleSignIn
+import FacebookCore
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        FirebaseApp.configure()
         return true
     }
 
@@ -33,6 +35,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
 
-
+    // Google
+    @available(iOS 9.0, *)
+    func application(_ application: UIApplication, open url: URL,
+                     options: [UIApplication.OpenURLOptionsKey: Any])
+    -> Bool {
+        ApplicationDelegate.shared.application(application,open: url,sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String,annotation: options[UIApplication.OpenURLOptionsKey.annotation])
+        return GIDSignIn.sharedInstance.handle(url)
+    }
 }
 
